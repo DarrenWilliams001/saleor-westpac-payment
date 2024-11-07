@@ -1,0 +1,5 @@
+mutation BulkCreateProducts($input: [ProductBulkCreateInput!]!) {
+  productBulkCreate(products: $input) {
+    count
+  }
+}

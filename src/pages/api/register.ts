@@ -9,6 +9,8 @@ import { saleorApp } from "../../saleor-app";
 export default createAppRegisterHandler({
   apl: saleorApp.apl,
   allowedSaleorUrls: [
+    // "https://saleoradmin.studio17designs.com.au/dashboard/",
+    () => true,
     /**
      * You may want your app to work only for certain Saleor instances.
      *
@@ -21,5 +23,5 @@ export default createAppRegisterHandler({
      *
      * Alternatively pass a function
      */
-  ],
+  ].filter(Boolean),
 });

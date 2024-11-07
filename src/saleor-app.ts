@@ -1,5 +1,5 @@
+import { APL, EnvAPL, FileAPL, UpstashAPL } from "@saleor/app-sdk/APL";
 import { SaleorApp } from "@saleor/app-sdk/saleor-app";
-import { APL, FileAPL, UpstashAPL } from "@saleor/app-sdk/APL";
 
 /**
  * By default auth data are stored in the `.auth-data.json` (FileAPL).
@@ -13,6 +13,16 @@ switch (process.env.APL) {
   case "upstash":
     // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
     apl = new UpstashAPL();
+    break;
+  case "env":
+    apl = new EnvAPL({
+      env: {
+        token: process.env.TOKEN_SECRET!,
+        saleorApiUrl: process.env.NEXT_PUBLIC_SALEOR_API_URL!,
+        appId: process.env.APP_ID!,
+      },
+      printAuthDataOnRegister: true,
+    });
     break;
   default:
     apl = new FileAPL();

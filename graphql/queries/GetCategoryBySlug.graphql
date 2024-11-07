@@ -1,0 +1,5 @@
+query GetCategoryBySlug($input: String) {
+  category(slug: $input) {
+    id
+  }
+}

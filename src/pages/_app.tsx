@@ -15,7 +15,13 @@ import { GraphQLProvider } from "../providers/GraphQLProvider";
  * Ensure instance is a singleton.
  * TODO: This is React 18 issue, consider hiding this workaround inside app-sdk
  */
-const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
+const appBridgeInstance =
+  typeof window !== "undefined"
+    ? new AppBridge({
+        saleorApiUrl: process.env.NEXT_PUBLIC_SALEOR_API_URL,
+        autoNotifyReady: true,
+      })
+    : undefined;
 
 function NextApp({ Component, pageProps }: AppProps) {
   /**
@@ -32,7 +38,7 @@ function NextApp({ Component, pageProps }: AppProps) {
     <NoSSRWrapper>
       <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
         <GraphQLProvider>
-          <ThemeProvider >
+          <ThemeProvider>
             <ThemeSynchronizer />
             <RoutePropagator />
             <Component {...pageProps} />
