@@ -1,0 +1,159 @@
+extend type Mutation {
+  processPayment(input: PaymentProcessInput!): PaymentProcessPayload
+  paymentStatus(paymentId: ID!): PaymentStatusPayload
+  refundPayment(input: PaymentRefundInput!): PaymentRefundPayload
+  validateCard(card: CreditCardInput!): CardValidationPayload
+}
+
+type Money {
+  amount: Float!
+  currency: String!
+}
+
+type Address {
+  firstName: String
+  lastName: String
+  line1: String
+  line2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  phone: String
+  email: String
+}
+
+type OrderItem {
+  name: String!
+  quantity: Int!
+  price: Float!
+  description: String
+}
+
+type OrderDetails {
+  orderItems: [OrderItem!]
+  shippingAddress: Address
+  billingAddress: Address
+}
+
+type CreditCard {
+  number: String!
+  expiryMonth: String!
+  expiryYear: String!
+  securityCode: String!
+}
+
+input CreditCardInput {
+  number: String!
+  expiryMonth: String!
+  expiryYear: String!
+  securityCode: String!
+}
+
+input AddressInput {
+  firstName: String
+  lastName: String
+  line1: String
+  line2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  phone: String
+  email: String
+}
+
+input OrderItemInput {
+  name: String!
+  quantity: Int!
+  price: Float!
+  description: String
+}
+
+input OrderDetailsInput {
+  orderItems: [OrderItemInput!]
+  shippingAddress: AddressInput
+  billingAddress: AddressInput
+}
+
+type Payment {
+  paymentId: ID!
+  status: PaymentStatus!
+  transactionId: String
+  amount: Money!
+  responseCode: String
+  responseText: String
+  receiptNumber: String
+  settlementDate: String
+  redirectUrl: String
+  timestamp: String!
+}
+
+type Refund {
+  refundId: ID!
+  status: PaymentStatus!
+  amount: Money!
+  transactionId: String!
+  responseCode: String
+  responseText: String
+  receiptNumber: String
+}
+
+enum PaymentStatus {
+  APPROVED
+  DECLINED
+  PENDING
+  ERROR
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  PAYPAL
+}
+
+input PaymentMethodInput {
+  type: PaymentMethodType!
+  card: CreditCardInput
+}
+
+input PaymentProcessInput {
+  orderNumber: ID!
+  transactionType: String!
+  principalAmount: Float!
+  currency: String!
+  customerNumber: String
+  customerEmail: String
+  customerIpAddress: String
+  orderDetails: OrderDetailsInput
+  paymentMethod: PaymentMethodInput!
+  redirectUrl: String!
+  merchantData: String
+}
+
+input PaymentRefundInput {
+  transactionId: ID!
+  amount: Float!
+  reason: String
+  customerEmail: String
+}
+
+type PaymentProcessPayload {
+  payment: Payment
+}
+
+type PaymentStatusPayload {
+  payment: Payment
+}
+
+type PaymentRefundPayload {
+  refund: Refund
+}
+
+type CardValidationPayload {
+  valid: Boolean!
+  responseCode: String
+  responseText: String
+}

@@ -1,20 +1,22 @@
-schema: graphql/schema.graphql
-documents: [graphql/**/*.graphql, src/**/*.ts, src/**/*.tsx]
+schema: 
+  - graphql/schema.graphql
+  - graphql/schema.extensions.graphql
+documents: graphql/**/*.graphql
 extensions:
   codegen:
-    overwrite: true
     generates:
       generated/graphql.ts:
-        config:
-          dedupeFragments: true
         plugins:
           - typescript
           - typescript-operations
-          - urql-introspection
-          - typescript-urql:
-              documentVariablePrefix: "Untyped"
-              fragmentVariablePrefix: "Untyped"
+          - typescript-urql
           - typed-document-node
+        config:
+          scalars:
+            JSONString: string
+            UUID: string
+            Metadata: Record<string, string>
+            DateTime: string
       generated/schema.graphql:
         plugins:
           - schema-ast
