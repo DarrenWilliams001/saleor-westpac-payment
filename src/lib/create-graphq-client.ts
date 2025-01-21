@@ -1,9 +1,9 @@
 import { AuthConfig, authExchange } from "@urql/exchange-auth";
 import {
   cacheExchange,
-  createClient as urqlCreateClient,
-  dedupExchange,
+  debugExchange,
   fetchExchange,
+  createClient as urqlCreateClient,
 } from "urql";
 
 interface IAuthState {
@@ -14,7 +14,6 @@ export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAu
   urqlCreateClient({
     url,
     exchanges: [
-      dedupExchange,
       cacheExchange,
       authExchange<IAuthState>({
         addAuthToOperation: ({ authState, operation }) => {
@@ -44,5 +43,6 @@ export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAu
         getAuth,
       }),
       fetchExchange,
+      debugExchange,
     ],
   });

@@ -18,29 +18,32 @@
 # misc
 .DS_Store
 *.pem
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vercel
 
 # debug
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
 # local env files
 .env*.local
 .envfile
 .saleor-app-auth.json
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
+next-env.d.ts
 
-.auth_token
-
-#editor
-.vscode
+# IDE
 .idea
+.vscode
+*.swp
+*.swo
 
 # GraphQL auto-generated
 generated/

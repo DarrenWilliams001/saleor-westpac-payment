@@ -1,3 +1,5 @@
+import { JSDOM } from "jsdom";
+
 // Define types for the Editor.js block structure
 interface BlockData {
   text: string;
@@ -20,8 +22,8 @@ interface EditorJsFormat {
 
 // Function to convert HTML to Editor.js format
 export function htmlToEditorJs(html: string): EditorJsFormat {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
   const blocks: Block[] = [];
 
   doc.body.childNodes.forEach((node) => {
@@ -37,7 +39,7 @@ export function htmlToEditorJs(html: string): EditorJsFormat {
         type: "header",
         data: {
           text: (node as HTMLElement).innerHTML,
-          level: parseInt(node.nodeName[1], 10), // Parse the number from 'H1', 'H2', etc.
+          level: parseInt(node.nodeName[1], 10),
         },
       });
     }

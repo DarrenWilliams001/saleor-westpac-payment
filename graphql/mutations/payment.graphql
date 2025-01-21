@@ -1,0 +1,63 @@
+mutation ProcessPayment($input: PaymentProcessInput!) {
+  processPayment(input: $input) {
+    payment {
+      paymentId
+      status
+      transactionId
+      amount {
+        amount
+        currency
+      }
+      responseCode
+      responseText
+      receiptNumber
+      settlementDate
+      redirectUrl
+      timestamp
+    }
+  }
+}
+
+mutation GetPaymentStatus($paymentId: ID!) {
+  paymentStatus(paymentId: $paymentId) {
+    payment {
+      paymentId
+      status
+      transactionId
+      amount {
+        amount
+        currency
+      }
+      responseCode
+      responseText
+      receiptNumber
+      settlementDate
+      timestamp
+    }
+  }
+}
+
+mutation RefundPayment($input: PaymentRefundInput!) {
+  refundPayment(input: $input) {
+    refund {
+      refundId
+      status
+      transactionId
+      amount {
+        amount
+        currency
+      }
+      responseCode
+      responseText
+      receiptNumber
+    }
+  }
+}
+
+mutation ValidateCard($card: CreditCardInput!) {
+  validateCard(card: $card) {
+    valid
+    responseCode
+    responseText
+  }
+}

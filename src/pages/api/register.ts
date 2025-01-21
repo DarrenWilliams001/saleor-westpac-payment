@@ -10,7 +10,7 @@ export default createAppRegisterHandler({
   apl: saleorApp.apl,
   allowedSaleorUrls: [
     // "https://saleoradmin.studio17designs.com.au/dashboard/",
-    () => true,
+    process.env.SALEOR_API_URL!,
     /**
      * You may want your app to work only for certain Saleor instances.
      *

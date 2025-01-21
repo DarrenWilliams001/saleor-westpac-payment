@@ -17,9 +17,9 @@ switch (process.env.APL) {
   case "env":
     apl = new EnvAPL({
       env: {
-        token: process.env.TOKEN_SECRET!,
-        saleorApiUrl: process.env.NEXT_PUBLIC_SALEOR_API_URL!,
-        appId: process.env.APP_ID!,
+        token: process.env.SALEOR_APP_TOKEN!,
+        saleorApiUrl: process.env.SALEOR_API_URL!,
+        appId: process.env.SALEOR_APP_ID!,
       },
       printAuthDataOnRegister: true,
     });

@@ -111,7 +111,7 @@ pnpm dev
 ```
 
 3. Expose local environment using tunnel:
-Use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/).
+   Use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/).
 
 4. Install the application in your dashboard:
 
@@ -142,3 +142,185 @@ The choice of the APL is made using the `APL` environment variable. If the value
 - `upstash`: use [Upstash](https://upstash.com/) Redis as storage method. Free account required. It can be used for development and production and supports multi-tenancy. Requires `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables to be set
 
 If you want to use your own database, you can implement your own APL. [Check the documentation to read more.](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
+
+# Saleor Westpac Payment App
+
+This Saleor app integrates Westpac PayWay API for payment processing in your Saleor store.
+
+## Features
+
+- Process payments through Westpac PayWay API
+- Handle payment confirmations and status updates
+- Process refunds
+- Secure handling of payment information
+- Integration with Saleor's order workflow
+
+## Setup
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Copy the environment variables template:
+
+```bash
+cp .env.example .env
+```
+
+4. Configure your environment variables:
+
+- `NEXT_PUBLIC_SALEOR_API_URL`: Your Saleor API endpoint
+- `WESTPAC_API_KEY`: Your Westpac PayWay API key
+- `WESTPAC_SECRET_KEY`: Your Westpac PayWay secret key
+- `WESTPAC_MERCHANT_ID`: Your Westpac merchant ID
+- `ENCRYPTION_KEY`: Your encryption key for securing sensitive data
+
+## Deployment to Vercel
+
+### Prerequisites
+
+1. A Vercel account
+2. The Vercel CLI installed:
+
+```bash
+npm i -g vercel
+```
+
+### Steps to Deploy
+
+1. Login to Vercel:
+
+```bash
+vercel login
+```
+
+2. Configure environment variables in Vercel:
+
+   - Go to your Vercel dashboard
+   - Select your project
+   - Go to Settings > Environment Variables
+   - Add the following variables:
+     ```
+     NEXT_PUBLIC_SALEOR_API_URL
+     WESTPAC_API_KEY
+     WESTPAC_SECRET_KEY
+     WESTPAC_MERCHANT_ID
+     ENCRYPTION_KEY
+     APL=vercel
+     ```
+
+3. Deploy to Vercel:
+
+```bash
+vercel
+```
+
+For production deployment:
+
+```bash
+vercel --prod
+```
+
+### Post-Deployment Configuration
+
+1. Update your Saleor Dashboard with the new app URL:
+
+   - Go to your Saleor Dashboard
+   - Navigate to Apps
+   - Update the app's webhook URLs to point to your Vercel deployment
+
+2. Verify the integration:
+   - Make a test payment
+   - Check webhook deliveries
+   - Verify payment status updates
+
+### Monitoring and Logs
+
+- View deployment logs: `vercel logs`
+- Monitor deployment: Vercel Dashboard > Deployments
+- Check application logs: Vercel Dashboard > Settings > Logs
+
+## Local Development
+
+1. Start the development server:
+
+```bash
+pnpm dev
+```
+
+2. Run tests:
+
+```bash
+pnpm test
+```
+
+## API Endpoints
+
+### Process Payment
+
+- **POST** `/api/payments/process`
+- Request body:
+
+```json
+{
+  "orderNumber": "string",
+  "transactionType": "payment" | "preauth",
+  "principalAmount": number,
+  "currency": "string",
+  "customerEmail": "string",
+  "paymentMethod": {
+    "type": "creditCard" | "paypal",
+    "card": {
+      "number": "string",
+      "expiryMonth": "string",
+      "expiryYear": "string",
+      "securityCode": "string"
+    }
+  },
+  "redirectUrl": "string"
+}
+```
+
+### Get Payment Status
+
+- **POST** `/api/payments/confirm`
+- Request body:
+
+```json
+{
+  "paymentId": "string"
+}
+```
+
+### Process Refund
+
+- **POST** `/api/payments/refund`
+- Request body:
+
+```json
+{
+  "transactionId": "string",
+  "amount": number,
+  "reason": "string",
+  "customerEmail": "string"
+}
+```
+
+## Security
+
+- All API keys and sensitive data are stored securely in Vercel environment variables
+- PCI DSS compliance is maintained by not storing any card details
+- All payment data is transmitted securely over HTTPS
+- CORS headers are properly configured
+- Webhook signatures are verified
+
+## Support
+
+For issues and feature requests, please create an issue in the repository.
+
+## License
+
+See [LICENSE](LICENSE) file for details.

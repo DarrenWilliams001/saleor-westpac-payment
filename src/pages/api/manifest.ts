@@ -18,7 +18,7 @@ export default createManifestHandler({
     const apiBaseURL = process.env.APP_API_BASE_URL ?? appBaseUrl;
 
     const manifest: AppManifest = {
-      name: "Product Importer",
+      name: "Westpac Payment",
       tokenTargetUrl: `${apiBaseURL}/api/register`,
       configurationUrl: `${apiBaseURL}/api/configuration`,
       appUrl: iframeBaseUrl,
@@ -36,7 +36,7 @@ export default createManifestHandler({
         "MANAGE_PRODUCTS",
         "MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES",
       ],
-      id: process.env.APP_ID!,
+      id: "westpac-payment",
       version: packageJson.version,
       /**
        * Configure webhooks here. They will be created in Saleor during installation
